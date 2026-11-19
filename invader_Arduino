@@ -1,0 +1,116 @@
+class Invader {
+  public:
+    // Constructors
+    Invader() {
+      x = 0;
+      y = 0;
+      strength = 0;
+    }
+    // sets values for private date members x and y
+    Invader(int x_arg, int y_arg) {
+      x = x_arg;
+      y = y_arg;
+    }
+    // sets values for private data members
+    Invader(int x_arg, int y_arg, int strength_arg) {
+      x = x_arg;
+      y = y_arg;
+      strength = strength_arg;
+    }
+    // sets values for private data members
+    void initialize(int x_arg, int y_arg, int strength_arg) {
+      x = x_arg;
+      y = y_arg;
+      strength = strength_arg;
+    }
+    
+    // getters
+    int get_x() const {
+      return x;
+    }
+    int get_y() const {
+      return y;
+    }
+    int get_strength() const {
+      return strength;
+    }
+
+    // Moves the Invader down the screen by one row
+    // Modifies: y
+    void move() {
+      y++;
+    }
+    
+    // draws the Invader if its strength is greater than 0
+    // calls: draw_with_rgb
+    void draw() {
+      if (strength == 1){
+        draw_with_rgb(RED, BLUE);
+      }
+      else if (strength == 2){
+        draw_with_rgb(ORANGE, BLUE);
+      }
+      else if (strength == 3){
+        draw_with_rgb(YELLOW, BLUE);
+      }
+      else if (strength == 4){
+        draw_with_rgb(GREEN, BLUE);
+      }
+      else if (strength == 5){
+        draw_with_rgb(BLUE, BLUE);
+      }
+      else if (strength == 6){
+        draw_with_rgb(PURPLE, BLUE);
+      }
+      else if (strength == 7){
+        draw_with_rgb(WHITE, BLUE);
+      }
+    }
+    
+    // draws black where the Invader used to be
+    // calls: draw_with_rgb
+    void erase() {
+      draw_with_rgb(BLACK, BLACK);
+    }    
+    
+    // Invader is hit by a Cannonball.
+    // Modifies: strength
+    // calls: draw, erase
+    void hit() {
+      strength--;
+      if(strength > 0){
+        draw();
+      }
+      else{
+        erase();
+      }
+
+    }
+
+  private:
+    int x;
+    int y;
+    int strength;
+    
+    // draws the Invader
+    void draw_with_rgb(Color body_color, Color eye_color) {
+      int start_x = get_x();
+      int start_y = get_y();
+                matrix.drawPixel(start_x, start_y, BLACK.to_333());
+                matrix.drawPixel(start_x+1, start_y, body_color.to_333());
+                matrix.drawPixel(start_x+2, start_y, body_color.to_333());
+                matrix.drawPixel(start_x+3, start_y, BLACK.to_333());
+                matrix.drawPixel(start_x, start_y+1,  body_color.to_333());
+                matrix.drawPixel(start_x+1, start_y+1, eye_color.to_333());
+                matrix.drawPixel(start_x+2, start_y+1, eye_color.to_333());
+                matrix.drawPixel(start_x+3, start_y+1, body_color.to_333());
+                matrix.drawPixel(start_x, start_y+2,  body_color.to_333());
+                matrix.drawPixel(start_x+1, start_y+2, body_color.to_333());
+                matrix.drawPixel(start_x+2, start_y+2, body_color.to_333());
+                matrix.drawPixel(start_x+3, start_y+2, body_color.to_333());
+                matrix.drawPixel(start_x, start_y+3,  body_color.to_333());
+                matrix.drawPixel(start_x+1, start_y+3, BLACK.to_333());
+                matrix.drawPixel(start_x+2, start_y+3, BLACK.to_333());
+                matrix.drawPixel(start_x+3, start_y+3, body_color.to_333());
+          }
+};
