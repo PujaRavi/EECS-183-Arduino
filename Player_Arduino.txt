@@ -1,0 +1,80 @@
+
+class Player {
+  public:
+    Player() {
+      x = 0;
+      y = 0;
+      //positions player to bottom of screen
+      initialize(16,14);
+      lives = 3;
+    }
+    
+    // getters
+    int get_x() const {
+      return x;
+    }
+    int get_y() const {
+      return y;
+    }
+    int get_lives() const {
+      return lives;
+    }
+    
+    // setter
+    void set_x(int x_arg) {
+      if(x_arg<0) {
+        x = 0;
+      }
+      else if (x_arg>31) {
+        x = 31;
+      }
+      else {
+        x = x_arg;
+      }
+    }
+    
+    // Modifies: lives
+    void die() {
+      if (lives > 0) {
+        lives--;
+      }
+    }
+    
+    // draws the Player
+    // calls: draw_with_rgb
+    void draw() {
+      draw_with_rgb(AQUA);
+    }
+    
+    // draws black where the Player used to be
+    // calls: draw_with_rgb
+    void erase() {
+      draw_with_rgb(BLACK);
+    }
+
+  private:
+    int x;
+    int y;
+    int lives;
+
+    // sets private data members x and y to initial values
+    void initialize(int x_arg, int y_arg) {
+      x = x_arg;
+      y = y_arg;
+    }
+    
+    // draws the player
+    void draw_with_rgb(Color color) {
+      matrix.drawPixel(x, y, color.to_333());
+      matrix.drawPixel(x, y+1, color.to_333());
+
+      if (x > 0) {
+        matrix.drawPixel(x-1,y+1, color.to_333());
+      }
+
+      else if(x < 31) {
+        matrix.drawPixel(x+1,y+1,color.to_333());
+      }
+
+    }
+};
