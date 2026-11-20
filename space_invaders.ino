@@ -375,14 +375,19 @@ class Game {
       // update player position
       // potentiometer gives output between 0(left) and 1023(right)
       // calculate equivalent percentage of 31 pixels
+      int last_x = player.get_x();
       int player_x = potentiometer_value / 1023 * 31;
-      player.erase();
-      player.set_x(player_x);
-
+      if (last_x != player_x) {
+        player.erase();
+        player.set_x(player_x);
+        player.draw();
+      }
+        
       // Update cannonball
       if (ball.has_been_fired() && (millis() - time > GAME_TICK) {
         ball.erase();
         ball.move();
+        ball.draw();
       } else if (button_pressed) {
         // Cannonball comes out of barrel on 3rd row from bottom
         ball.fire(player_x, 29);
@@ -461,7 +466,6 @@ class Game {
 
       // Draw updates
       player.draw();
-      ball.draw();
     }
   private:
     int level;
@@ -543,7 +547,7 @@ void loop() {
   int potentiometer_value = analogRead(POTENTIOMETER_PIN_NUMBER);
   bool button_pressed = (digitalRead(BUTTON_PIN_NUMBER) == HIGH);
   game.update(potentiometer_value, button_pressed);
-  serial.print("pot value: " + potentiometer_value);
+  Serial.println("pot value: " + potentiometer_value);
 }
 
 // displays Level
