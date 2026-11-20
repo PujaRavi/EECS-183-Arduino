@@ -376,7 +376,7 @@ class Game {
       // potentiometer gives output between 0(left) and 1023(right)
       // calculate equivalent percentage of 31 pixels
       int last_x = player.get_x();
-      int player_x = potentiometer_value / 1023 * 31;
+      int player_x = potentiometer_value;
       if (last_x != player_x) {
         player.erase();
         player.set_x(player_x);
@@ -384,7 +384,7 @@ class Game {
       }
         
       // Update cannonball
-      if (ball.has_been_fired() && (millis() - time > GAME_TICK) {
+      if (ball.has_been_fired() && (millis() - time) > GAME_TICK) {
         ball.erase();
         ball.move();
         ball.draw();
