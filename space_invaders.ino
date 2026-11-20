@@ -386,7 +386,7 @@ class Game {
       }
         
       // Update cannonball
-      if (ball.has_been_fired() && (millis() - time) > GAME_TICK) {
+      if (ball.has_been_fired() && (millis() - time) > 200) {
         ball.erase();
         ball.move();
         ball.draw();
@@ -451,6 +451,9 @@ class Game {
           // Cannonball hit
           enemies[i].hit();
           ball.hit();
+          if (level_cleared()) {
+            reset_level();
+          }
         }
 
         // Check for player collision
