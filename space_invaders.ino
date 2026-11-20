@@ -451,9 +451,6 @@ class Game {
           // Cannonball hit
           enemies[i].hit();
           ball.hit();
-          if (level_cleared()) {
-            reset_level();
-          }
         }
 
         // Check for player collision
@@ -476,7 +473,10 @@ class Game {
       }
 
       // Draw updates
-      player.draw();
+      if (level_cleared()) {
+        reset_level();
+        return;
+      }
     }
   private:
     int level;
