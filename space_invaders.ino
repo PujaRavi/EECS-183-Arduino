@@ -588,4 +588,8 @@ void game_over() {
   matrix.setTextColor(WHITE.to_333());
   matrix.setCursor(0,0);
   matrix.print("game over");
+  
+  delay(2000);
+  matrix.fillScreen(BLACK.to_333());
+  
 }
