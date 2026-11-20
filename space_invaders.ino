@@ -364,12 +364,6 @@ class Game {
     // see spec for details of game
     // Modifies: global variable matrix
     void update(int potentiometer_value, bool button_pressed) {
-      /*
-      update player position
-      update cannonball
-      update invaders
-      */
-
       // update player position
       // potentiometer gives output between 0(left) and 1023(right)
       // calculate equivalent percentage of 31 pixels
@@ -446,7 +440,7 @@ class Game {
 
         // Check for player collision
         // Collision occurs if invader is 1 row above last and one of the tails matches x
-        if (enemy_y == 27 && enemy_x == player_x || enemy_x + 3 == player_x) {
+        if (enemy_y == 27 && (enemy_x == player_x || enemy_x + 3 == player_x)) {
           // Player death
           player.die();
           if (player.get_lives() == 0) {
