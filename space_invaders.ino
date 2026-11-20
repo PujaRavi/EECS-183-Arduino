@@ -17,7 +17,7 @@ const int BUTTON_PIN_NUMBER = 10;
 // global constant for the number of Invaders in the game
 const int NUM_ENEMIES = 16;
 const int ROW_SIZE = 8;
-const int INVADER_TICK = 500;
+const int GAME_TICK = 1000;
 
 // a global variable that represents the LED screen
 RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
@@ -380,7 +380,7 @@ class Game {
       player.set_x(player_x);
 
       // Update cannonball
-      if (ball.has_been_fired()) {
+      if (ball.has_been_fired() && (millis() - time > GAME_TICK) {
         ball.erase();
         ball.move();
       } else if (button_pressed) {
@@ -389,7 +389,7 @@ class Game {
       }
       
       // Move bottom row of invaders if enough time has paased
-      if ((millis() - time) > INVADER_TICK) {
+      if ((millis() - time) > GAME_TICK) {
         time = millis();
         bool bottom_row_alive = false;
         for (int i = ROW_SIZE; i < NUM_ENEMIES; i++) {
@@ -446,6 +446,10 @@ class Game {
         if (enemy_y == 27 && enemy_x == player_x || enemy_x + 3 == player_x) {
           // Player death
           player.die();
+          if (player.get_lives() == 0) {
+            game_over();
+            return;
+          }
           level--;
           reset_level();
           return;
@@ -539,6 +543,7 @@ void loop() {
   int potentiometer_value = analogRead(POTENTIOMETER_PIN_NUMBER);
   bool button_pressed = (digitalRead(BUTTON_PIN_NUMBER) == HIGH);
   game.update(potentiometer_value, button_pressed);
+  serial.print("pot value: " + potentiometer_value);
 }
 
 // displays Level
@@ -553,7 +558,7 @@ void print_level(int level) {
   matrix.setCursor(0,8);
   matrix.print(level);
 
-  delay(200);
+  delay(2000);
   matrix.fillScreen(BLACK.to_333());
 }
 
@@ -568,7 +573,7 @@ void print_lives(int lives) {
   matrix.setCursor(0,8);
   matrix.print(lives);
 
-  delay(200);
+  delay(2000);
   matrix.fillScreen(BLACK.to_333());
 }
 
