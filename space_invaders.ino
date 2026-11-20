@@ -488,7 +488,7 @@ class Game {
     // check if Player defeated all Invaders in current level
     bool level_cleared() {
       for (int i = 0; i < NUM_ENEMIES; i++) {
-        if (enemies[i].get_strength() != 0) {
+        if (enemies[i].get_strength() <= 0) {
           return false;
         }
       }
