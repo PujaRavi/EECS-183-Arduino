@@ -16,6 +16,8 @@ const int BUTTON_PIN_NUMBER = 10;
 
 // global constant for the number of Invaders in the game
 const int NUM_ENEMIES = 16;
+const int ROW_SIZE = 8;
+const int INVADER_TICK = 500;
 
 // a global variable that represents the LED screen
 RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
@@ -226,7 +228,8 @@ class Cannonball {
 
       y = y - 1;
 
-      int bottomLED = y + 1; // ball is 2 LED tall this is lower one
+      // ball is 2 LED tall this is lower one
+      int bottomLED = y + 1; 
       if (bottomLED < 0) {
         fired = false;
       }
@@ -258,6 +261,7 @@ class Cannonball {
     }
 
   private:
+    // y is the coordinate of the top of the cannonball
     int x;
     int y;
     bool fired;
@@ -348,15 +352,14 @@ class Game {
   public:
     Game() {
       level = 0;
-      time = 0;
     }
     
     // sets up a new game of Space Invaders
     // Modifies: global variable matrix
-    void setupGame() {
-      print_lives(lives);
-      print_level(level);
-      reset_level()
+    void setup_game() {
+      level = 0;
+      time = millis();
+      reset_level();
     }
     
     // advances the game simulation one step and renders the graphics
@@ -364,41 +367,97 @@ class Game {
     // Modifies: global variable matrix
     void update(int potentiometer_value, bool button_pressed) {
       /*
-      check for player hit
-      update invaders
       update player position
-      check for invader hit
       update cannonball
+      update invaders
       */
 
-      // check for player hit
-      // TODO: based on other class implementations
-
       // update player position
-      // TODO: set x based on how player class is implemented and potentiometer value
-      player.set_x()
+      // potentiometer gives output between 0(left) and 1023(right)
+      // calculate equivalent percentage of 31 pixels
+      int player_x = potentiometer_value / 1023 * 31;
+      player.erase();
+      player.set_x(player_x);
+
+      // Update cannonball
+      if (ball.has_been_fired()) {
+        ball.erase();
+        ball.move();
+      } else if (button_pressed) {
+        // Cannonball comes out of barrel on 3rd row from bottom
+        ball.fire(player_x, 29);
+      }
       
-      // update invaders
-      bool bottomRowAlive = false;
-      for (int i = (MAX_ENEMIES / 2); i < MAX_ENEMIES; i++) {
-        if (enemies[i].get_strength() != 0) {
-          bottomRowAlive = true;
+      // Move bottom row of invaders if enough time has paased
+      if ((millis() - time) > INVADER_TICK) {
+        time = millis();
+        bool bottom_row_alive = false;
+        for (int i = ROW_SIZE; i < NUM_ENEMIES; i++) {
+          if (enemies[i].get_strength() != 0) {
+            bottom_row_alive = true;
+          }
+        }
+        for (int i = 0; i < ROW_SIZE; i++) {
+          if (bottom_row_alive) {
+            enemies[i + ROW_SIZE].erase();
+            enemies[i + ROW_SIZE].move();
+          } else {
+            enemies[i].erase();
+            enemies[i].move();
+          }
+          // Check for invader gets to bottom row
+          if (enemies[i].get_y() == 28) {
+            player.die();
+            level--;
+            reset_level();
+            return;
+          }
         }
       }
-      for (int i = 0; i < (MAX_ENEMIES / 2); i++) {
-        if (bottomRowAlive) {
-          enemies[i + 8].move();
-        } else {
-          enemies[i].move();
+
+      // Check for collisions
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        // Check for cannonball hit
+        int enemy_x = enemies[i].get_x();
+        int enemy_y = enemies[i].get_y();
+        int ball_x = ball.get_x();
+        int ball_y = ball.get_y();
+        int x_difference = ball_x - enemy_x;
+        bool hit = false;
+        if (x_difference == 0 || x_difference == 3) {
+          // Check for tail hitbox
+          if (enemy_y + 3 >= ball_y) {
+            hit = true;
+          }
+        } else if (x_difference < 2 && x_difference > 0) {
+          // Check for body hitbox
+          if (enemy_y + 2 >= ball_y) {
+            hit = true;
+          }
         }
+        if (hit) {
+          // Cannonball hit
+          enemies[i].hit();
+          ball.hit();
+        }
+
+        // Check for player collision
+        // Collision occurs if invader is 1 row above last and one of the tails matches x
+        if (enemy_y == 27 && enemy_x == player_x || enemy_x + 3 == player_x) {
+          // Player death
+          player.die();
+          level--;
+          reset_level();
+          return;
+        }
+
+        // Draw enemy updates
+        enemies[i].draw();
       }
 
-      // check for invader hit
-      // TODO: based on other class implemtations
-
-
-      // update cannonball
-      ball.move();
+      // Draw updates
+      player.draw();
+      ball.draw();
     }
   private:
     int level;
@@ -409,7 +468,7 @@ class Game {
 
     // check if Player defeated all Invaders in current level
     bool level_cleared() {
-      for (int i = 0; i < MAX_ENEMIES; i++) {
+      for (int i = 0; i < NUM_ENEMIES; i++) {
         if (enemies[i].get_strength() != 0) {
           return false;
         }
@@ -420,21 +479,22 @@ class Game {
     // set up a level
     void reset_level() {
       level++;
-      print_lives(lives);
       print_level(level);
-
-      // Initialize player
-      // TODO: set y based on player class implementation
-      player.set_y();
+      delay(500);
+      print_lives(player.get_lives());
+      delay(500);
 
       // Initialize enemies based on level
-      // TODO: need to set x and y args depending on invader class implementation
       for (int i = 0; i < NUM_ENEMIES; i++) {
-        int x = 0;
+        // Invaders are 4 wide and 4 tall
+        int x = i * 4;
         int y = 0;
+        if (i >= ROW_SIZE) {
+          y = 4;
+        }
         int strength = 0;
 
-        if (level == 1 && i < (NUM_ENEMIES / 2)) {
+        if (level == 1 && i < ROW_SIZE) {
           // Level 1: 8 invaders with strength 1
           strength = 1;
 
@@ -448,7 +508,7 @@ class Game {
 
         } else if (level == 4) {
           // Level 4: 16 invaders with strength alternating 5,4 on top row and 2,3 on bottom row
-          if (i < (NUM_ENEMIES / 2) {
+          if (i < ROW_SIZE) {
             strength = 5 - (i % 2);
           } else {
             strength = (i % 2) + 2;
@@ -459,7 +519,7 @@ class Game {
           strength = random(1, 7);
 
         }
-        enemies[i].initalize(x, y, strength);
+        enemies[i].initialize(x, y, strength);
       }
     }
 };
@@ -472,18 +532,15 @@ void setup() {
   Serial.begin(9600);
   pinMode(BUTTON_PIN_NUMBER, INPUT);
   matrix.begin();
-  game.setupGame();
   randomSeed(analogRead(4));
+  game.setup_game();
 }
 
 // see https://www.arduino.cc/reference/en/language/structure/sketch/loop/
 void loop() {
   int potentiometer_value = analogRead(POTENTIOMETER_PIN_NUMBER);
   bool button_pressed = (digitalRead(BUTTON_PIN_NUMBER) == HIGH);
-
   game.update(potentiometer_value, button_pressed);
-  // Wait half a second
-  delay (500);
 }
 
 // displays Level
