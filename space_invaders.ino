@@ -212,9 +212,11 @@ class Cannonball {
     // Game calls this when button pressed, passing in spot
     // above cannon's barrel
     void fire(int x_arg, int y_arg) {
-      x = x_arg;
-      y = y_arg;
-      fired = true;
+      if (!fired) {
+        x = x_arg;
+        y = y_arg;
+        fired = true;
+      }
     }
     
     // moves the Cannonball and detects if it goes off the screen
