@@ -447,7 +447,7 @@ class Game {
 
         // Check for player collision
         // Collision occurs if invader is 1 row above last and one of the tails matches x
-        if (enemy_y == 27 && (enemy_x == player_x || enemy_x + 3 == player_x)) {
+        if (enemy_y == 11 && (enemy_x == player_x || enemy_x + 3 == player_x)) {
           // Player death
           player.die();
           if (player.get_lives() == 0) {
