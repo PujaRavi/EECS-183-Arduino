@@ -298,6 +298,13 @@ class Player {
         x = x_arg;
       }
     }
+
+    void set_lives(int lives_arg) {
+        if (lives_arg >= 0) {
+          lives = lives_arg;
+        }
+    
+    }
     
     // Modifies: lives
     void die() {
