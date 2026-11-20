@@ -480,9 +480,7 @@ class Game {
     void reset_level() {
       level++;
       print_level(level);
-      delay(500);
       print_lives(player.get_lives());
-      delay(500);
 
       // Initialize enemies based on level
       for (int i = 0; i < NUM_ENEMIES; i++) {
