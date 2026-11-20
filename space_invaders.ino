@@ -382,7 +382,7 @@ class Game {
         ball.draw();
       } else if (button_pressed) {
         // Cannonball comes out of barrel on 3rd row from bottom
-        ball.fire(player_x, 29);
+        ball.fire(player_x, 13);
       }
       
       // Move bottom row of invaders if enough time has paased
