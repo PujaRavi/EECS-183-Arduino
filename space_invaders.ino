@@ -271,9 +271,7 @@ class Player {
   public:
     Player() {
       x = 0;
-      y = 0;
-      //positions player to bottom of screen
-      initialize(16,14);
+      y = 14;
       lives = 3;
     }
     
@@ -453,6 +451,7 @@ class Game {
           player.die();
           if (player.get_lives() == 0) {
             game_over();
+            setup_game();
             return;
           }
           level--;
@@ -588,8 +587,5 @@ void game_over() {
   matrix.setTextColor(WHITE.to_333());
   matrix.setCursor(0,0);
   matrix.print("game over");
-  
-  delay(2000);
-  matrix.fillScreen(BLACK.to_333());
-  
+  delay(5000);
 }
