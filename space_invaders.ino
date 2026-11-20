@@ -363,6 +363,7 @@ class Game {
     // Modifies: global variable matrix
     void setup_game() {
       level = 0;
+      player.set_lives(3);
       time = millis();
       reset_level();
     }
@@ -412,6 +413,11 @@ class Game {
           // Check for invader gets to bottom row
           if (enemies[i].get_y() == 13) {
             player.die();
+            if (player.get_lives() == 0) {
+              game_over();
+              setup_game();
+              return;
+            }
             level--;
             reset_level();
             return;
