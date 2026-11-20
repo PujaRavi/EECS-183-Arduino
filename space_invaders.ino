@@ -403,7 +403,7 @@ class Game {
             enemies[i].move();
           }
           // Check for invader gets to bottom row
-          if (enemies[i].get_y() == 28) {
+          if (enemies[i].get_y() == 12) {
             player.die();
             level--;
             reset_level();
