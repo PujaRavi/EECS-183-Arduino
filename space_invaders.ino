@@ -290,10 +290,10 @@ class Player {
     
     // setter
     void set_x(int x_arg) {
-      if(x_arg<0) {
+      if(x_arg < 0) {
         x = 0;
       }
-      else if (x_arg>31) {
+      else if (x_arg > 31) {
         x = 31;
       }
       else {
@@ -382,9 +382,11 @@ class Game {
       player.set_x(player_x);
 
       // update cannonball position
-      if (millis() - time > GAME_TICK) {
+      if (ball.has_been_fired() || millis() - time > GAME_TICK) {
         ball.erase();
         ball.move();
+      } else if (!ball.has_been_fired() && button_pressed) {
+        ball.fire(player_x, 30);
       }
 
       bool bottom_row_alive = false;
@@ -468,7 +470,7 @@ class Game {
       // Initialize enemies based on level
       for (int i = 0; i < NUM_ENEMIES; i++) {
         // Invaders are 4 wide and 4 tall
-        int x = (i % ROW_SIZE) * 4;
+        int x = (i % ROW_SIZE) * 4 + 1;
         int y = 0;
         if (i >= ROW_SIZE) {
           y = 4;
