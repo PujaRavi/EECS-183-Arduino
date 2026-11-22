@@ -186,6 +186,7 @@ class Cannonball {
     // resets private data members to initial values
     // Puts ball back to how it started (not flying, 0,0)
     void reset() {
+      erase();
       x = 0;
       y = 0;
       fired = false;
