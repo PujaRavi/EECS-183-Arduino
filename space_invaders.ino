@@ -291,7 +291,7 @@ class Player {
     // setter
     void set_x(int x_arg) {
       if(x_arg < 0) {
-        x = 0;
+        x = 1;
       }
       else if (x_arg > 31) {
         x = 31;
