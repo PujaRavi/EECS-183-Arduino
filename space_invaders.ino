@@ -346,11 +346,11 @@ class Player {
       matrix.drawPixel(x, y+1, color.to_333());
 
 
-      if (x > 0) {
+      if (x > 1) {
         matrix.drawPixel(x-1,y+1, color.to_333());
       }
 
-      if(x < 31) {
+      if(x < 30) {
         matrix.drawPixel(x+1,y+1, color.to_333());
       }
 
