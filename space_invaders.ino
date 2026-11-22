@@ -406,7 +406,7 @@ class Game {
           }
         }
 
-        if (enemies[i].get_strength > 0) {
+        if (enemies[i].get_strength() > 0) {
           // Check for invader-player collision
           int enemy_y = enemies[i].get_y();
           int enemy_x = enemies[i].get_x();
