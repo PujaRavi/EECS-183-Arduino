@@ -17,8 +17,8 @@ const int BUTTON_PIN_NUMBER = 10;
 // global constant for the number of Invaders in the game
 const int NUM_ENEMIES = 16;
 const int ROW_SIZE = 8;
-const int GAME_TICK = 3000;
-const int BALL_TICK = 200;
+const int GAME_TICK = 2000;
+const int BALL_TICK = 50;
 
 // a global variable that represents the LED screen
 RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
@@ -405,7 +405,7 @@ class Game {
           int enemy_x = enemies[i].get_x();
 
           // Check for invader reaches bottom row
-          if (enemy_y >= 13) {
+          if (enemy_y >= 12) {
             level--;
             player.die();
             reset_level();
