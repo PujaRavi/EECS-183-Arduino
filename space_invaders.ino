@@ -378,10 +378,11 @@ class Game {
     void update(int potentiometer_value, bool button_pressed) {
 
       // update player position
-      player.erase();
       int player_x = map(potentiometer_value, 0, 1023, 0, 31);
-      player.set_x(player_x);
-
+      if (player_x != player.get_x()) {
+        player.erase();
+        player.set_x(player_x);
+      }
       // update cannonball position
       if (ball.has_been_fired() || millis() - time > GAME_TICK) {
         ball.erase();
