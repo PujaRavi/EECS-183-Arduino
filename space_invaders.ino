@@ -402,7 +402,6 @@ class Game {
             enemies[i].move();
           }
         }
-      }
 
         if (enemies[i].get_strength() > 0) {
           // Check for invader-player collision
@@ -431,6 +430,7 @@ class Game {
 
         enemies[i].draw();
       }
+    }
 
       if (level_cleared()) {
         reset_level();
