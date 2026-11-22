@@ -386,7 +386,7 @@ class Game {
         ball.erase();
         ball.move();
       } else if (!ball.has_been_fired() && button_pressed) {
-        ball.fire(player_x, 30);
+        ball.fire(player_x, 13);
       }
 
       bool bottom_row_alive = false;
@@ -398,7 +398,7 @@ class Game {
 
       for (int i = 0; i < NUM_ENEMIES; i++) {
         // Move bottom row of invaders every 10 game ticks
-        if (millis() - time > GAME_TICK * 10) {
+        if (millis() - time > GAME_TICK) {
           if (bottom_row_alive && i >= ROW_SIZE) {
             enemies[i].erase();
             enemies[i].move();
@@ -412,7 +412,7 @@ class Game {
           // Check for invader-player collision
           int enemy_y = enemies[i].get_y();
           int enemy_x = enemies[i].get_x();
-          if (enemy_y == 27 && (enemy_x == player_x || enemy_x + 3 == player_x)) {
+          if (enemy_y == 11 && (enemy_x == player_x || enemy_x + 3 == player_x)) {
             // Collision with an invader tail
             level--;
             player.die();
