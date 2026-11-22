@@ -170,8 +170,6 @@ class Invader {
                 matrix.drawPixel(start_x+2, start_y+2, body_color.to_333());
                 matrix.drawPixel(start_x+3, start_y+2, body_color.to_333());
                 matrix.drawPixel(start_x, start_y+3,  body_color.to_333());
-                matrix.drawPixel(start_x+1, start_y+3, BLACK.to_333());
-                matrix.drawPixel(start_x+2, start_y+3, BLACK.to_333());
                 matrix.drawPixel(start_x+3, start_y+3, body_color.to_333());
           }
 };
