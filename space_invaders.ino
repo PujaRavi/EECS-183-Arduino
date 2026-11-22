@@ -360,8 +360,7 @@ class Game {
     void setup_game() {
       level = 0;
       player.set_lives(3);
-      ball.reset();
-
+      
       enemy_time = millis();
       ball_time = millis();
     }
@@ -490,6 +489,7 @@ class Game {
     // set up a level
     void reset_level() {
       level++;
+      ball.reset();
       print_level(level);
       print_lives(player.get_lives());
 
