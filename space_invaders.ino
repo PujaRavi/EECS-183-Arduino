@@ -392,7 +392,6 @@ class Game {
       }
       // Move invaders
       if (millis() - time > GAME_TICK) {
-        time = millis();
         for (int i = 0; i < NUM_ENEMIES; i++) {
           if (bottom_row_alive && i >= ROW_SIZE) {
             enemies[i].erase();
@@ -401,7 +400,6 @@ class Game {
             enemies[i].erase();
             enemies[i].move();
           }
-        }
 
         if (enemies[i].get_strength() > 0) {
           // Check for invader-player collision
@@ -430,6 +428,7 @@ class Game {
 
         enemies[i].draw();
       }
+        time = millis();
     }
 
       if (level_cleared()) {
