@@ -17,7 +17,7 @@ const int BUTTON_PIN_NUMBER = 10;
 // global constant for the number of Invaders in the game
 const int NUM_ENEMIES = 16;
 const int ROW_SIZE = 8;
-const int GAME_TICK = 1000;
+const int GAME_TICK = 400;
 
 // a global variable that represents the LED screen
 RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
@@ -361,8 +361,8 @@ class Game {
     void setup_game() {
       level = 0;
       player.set_lives(3);
-      reset_level();
       time = millis();
+      reset_level();
     }
     
     // advances the game simulation one step and renders the graphics
@@ -377,7 +377,7 @@ class Game {
         player.set_x(player_x);
       }
       // update cannonball position
-      if (ball.has_been_fired() || millis() - time > GAME_TICK / 4) {
+      if (ball.has_been_fired() || millis() - time > GAME_TICK) {
         ball.erase();
         ball.move();
       } else if (!ball.has_been_fired() && button_pressed) {
@@ -390,9 +390,10 @@ class Game {
           bottom_row_alive = true;
         }
       }
-      // Move invaders
-      if (millis() - time > GAME_TICK) {
-        for (int i = 0; i < NUM_ENEMIES; i++) {
+
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        // Move bottom row of invaders every 10 game ticks
+        if (millis() - time > GAME_TICK) {
           if (bottom_row_alive && i >= ROW_SIZE) {
             enemies[i].erase();
             enemies[i].move();
@@ -400,44 +401,34 @@ class Game {
             enemies[i].erase();
             enemies[i].move();
           }
+        }
 
-          if (enemies[i].get_strength() > 0) {
-            int enemy_y = enemies[i].get_y();
-            int enemy_x = enemies[i].get_x();
-
-            // Check for invader reaches bottom row
-            if (enemy_y == 13) {
-              level--;
-              player.die();
-              reset_level();
-              return;
-            }
-            
-            // Check for invader-player collision
-            if (enemy_y == 11 && (enemy_x == player_x || enemy_x + 3 == player_x)) {
-              // Collision with an invader tail
-              level--;
-              player.die();
-              reset_level();
-              return;
-            }
-
-            // Check for invader-ball collision
-            int x_difference = ball.get_x() - enemy_x;
-            if ((x_difference == 0 || x_difference == 3) && ball.get_y() <= enemy_y + 3) {
-              // Ball hits invader tail
-              enemies[i].hit();
-              ball.hit();
-            } else if ((x_difference == 1 || x_difference == 2) && ball.get_y() <= enemy_y + 2) {
-              // Ball hits invader body
-              enemies[i].hit();
-              ball.hit();
-            }
+        if (enemies[i].get_strength() > 0) {
+          // Check for invader-player collision
+          int enemy_y = enemies[i].get_y();
+          int enemy_x = enemies[i].get_x();
+          if (enemy_y == 11 && (enemy_x == player_x || enemy_x + 3 == player_x)) {
+            // Collision with an invader tail
+            level--;
+            player.die();
+            reset_level();
+            return;
           }
 
-          enemies[i].draw();
+          // Check for invader-ball collision
+          int x_difference = ball.get_x() - enemy_x;
+          if ((x_difference == 0 || x_difference == 3) && ball.get_y() <= enemy_y + 3) {
+            // Ball hits invader tail
+            enemies[i].hit();
+            ball.hit();
+          } else if ((x_difference == 1 || x_difference == 2) && ball.get_y() <= enemy_y + 2) {
+            // Ball hits invader body
+            enemies[i].hit();
+            ball.hit();
+          }
         }
-        time = millis();
+
+        enemies[i].draw();
       }
 
       if (level_cleared()) {
@@ -446,9 +437,10 @@ class Game {
 
       player.draw();
       ball.draw();
+      time = millis();
     }
   private:
-    int level;  
+    int level;
     unsigned long time;
     Player player;
     Cannonball ball;
