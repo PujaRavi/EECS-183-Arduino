@@ -407,7 +407,7 @@ class Game {
           int enemy_x = enemies[i].get_x();
 
           // Check for invader reaches bottom row
-          if (enemy_y >= 12) {
+          if (enemy_y >= 13) {
             level--;
             player.die();
             reset_level();
