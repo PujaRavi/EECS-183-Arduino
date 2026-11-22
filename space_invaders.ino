@@ -365,8 +365,6 @@ class Game {
 
       enemy_time = millis();
       ball_time = millis();
-
-      reset_level();
     }
     
     // advances the game simulation one step and renders the graphics
@@ -563,6 +561,7 @@ void setup() {
   matrix.begin();
   randomSeed(analogRead(4));
   game.setup_game();
+  game.reset_level();
 }
 
 // see https://www.arduino.cc/reference/en/language/structure/sketch/loop/
@@ -598,7 +597,7 @@ void print_lives(int lives) {
   matrix.print("Lives");
 
   matrix.setCursor(0,8);
-  matrix.print(lives);
+  matrix.print(Lives);
 
   delay(2000);
   matrix.fillScreen(BLACK.to_333());
@@ -610,7 +609,7 @@ void game_over() {
   matrix.setTextSize(1);
   matrix.setTextColor(WHITE.to_333());
   matrix.setCursor(0,0);
-  matrix.print("game over");
+  matrix.print("Game over");
   delay(5000);
 
   game.setup_game();
