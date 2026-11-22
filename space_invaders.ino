@@ -406,27 +406,29 @@ class Game {
           }
         }
 
-        // Check for invader-player collision
-        int enemy_y = enemies[i].get_y();
-        int enemy_x = enemies[i].get_x();
-        if (enemy_y == 27 && enemy_x == player_x || enemy_x + 3 == player_x) {
-          // Collision with an invader tail
-          level--;
-          player.die();
-          reset_level();
-          return;
-        }
+        if (enemies[i].get_strength > 0) {
+          // Check for invader-player collision
+          int enemy_y = enemies[i].get_y();
+          int enemy_x = enemies[i].get_x();
+          if (enemy_y == 27 && (enemy_x == player_x || enemy_x + 3 == player_x)) {
+            // Collision with an invader tail
+            level--;
+            player.die();
+            reset_level();
+            return;
+          }
 
-        // Check for invader-ball collision
-        int x_difference = ball.get_x() - enemy_x;
-        if (x_difference == 0 || x_difference == 3 && ball.get_y() <= enemy_y + 3) {
-          // Ball hits invader tail
-          enemies[i].hit();
-          ball.hit();
-        } else if (x_difference == 1 || x_difference == 2 && ball.get_y() <= enemy_y + 2) {
-          // Ball hits invader body
-          enemies[i].hit();
-          ball.hit();
+          // Check for invader-ball collision
+          int x_difference = ball.get_x() - enemy_x;
+          if ((x_difference == 0 || x_difference == 3) && ball.get_y() <= enemy_y + 3) {
+            // Ball hits invader tail
+            enemies[i].hit();
+            ball.hit();
+          } else if ((x_difference == 1 || x_difference == 2) && ball.get_y() <= enemy_y + 2) {
+            // Ball hits invader body
+            enemies[i].hit();
+            ball.hit();
+          }
         }
 
         enemies[i].draw();
@@ -438,6 +440,7 @@ class Game {
 
       player.draw();
       ball.draw();
+      time = millis();
     }
   private:
     int level;
@@ -449,7 +452,7 @@ class Game {
     // check if Player defeated all Invaders in current level
     bool level_cleared() {
       for (int i = 0; i < NUM_ENEMIES; i++) {
-        if (enemies[i].get_strength() >= 0) {
+        if (enemies[i].get_strength() > 0) {
           return false;
         }
       }
