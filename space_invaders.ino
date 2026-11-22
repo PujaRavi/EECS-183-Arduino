@@ -423,11 +423,13 @@ class Game {
             if ((x_difference == 0 || x_difference == 3) && ball.get_y() <= enemy_y + 3) {
 
               enemies[i].hit();
+              ball.erase();
               ball.hit();
 
             } else if ((x_difference == 1 || x_difference == 2) && ball.get_y() <= enemy_y + 2) {
 
               enemies[i].hit();
+              ball.erase();
               ball.hit();
             }
           }
