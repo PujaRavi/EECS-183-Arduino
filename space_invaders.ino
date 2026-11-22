@@ -17,7 +17,7 @@ const int BUTTON_PIN_NUMBER = 10;
 // global constant for the number of Invaders in the game
 const int NUM_ENEMIES = 16;
 const int ROW_SIZE = 8;
-const int GAME_TICK = 100;
+const int GAME_TICK = 400;
 
 // a global variable that represents the LED screen
 RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
@@ -380,7 +380,7 @@ class Game {
     void update(int potentiometer_value, bool button_pressed) {
 
       // update player position
-      int player_x = map(potentiometer_value, 0, 1023, 0, 31);
+      int player_x = map(potentiometer_value, 0, 1023, 1, 30);
       if (player_x != player.get_x()) {
         player.erase();
         player.set_x(player_x);
