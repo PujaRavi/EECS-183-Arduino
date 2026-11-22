@@ -406,8 +406,16 @@ class Game {
           int enemy_y = enemies[i].get_y();
           int enemy_x = enemies[i].get_x();
 
+          // Check for invader reaches bottom row
+          if (enemy_y >= 12) {
+            level--;
+            player.die();
+            reset_level();
+            return;
+          }
+          
           // Check for invader-player collision
-          if (enemy_y == 11 && (enemy_x == player_x || enemy_x + 3 == player_x)) {
+          if (enemy_y >= 11 && (enemy_x == player_x || enemy_x + 3 == player_x)) {
 
             level--;
             player.die();
