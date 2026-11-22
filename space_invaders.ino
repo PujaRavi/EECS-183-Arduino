@@ -390,11 +390,10 @@ class Game {
           bottom_row_alive = true;
         }
       }
-
-      for (int i = 0; i < NUM_ENEMIES; i++) {
-        // Move bottom row of invaders every 10 game ticks
-        if (millis() - time > GAME_TICK) {
-          time = millis();
+      // Move invaders
+      if (millis() - time > GAME_TICK) {
+        time = millis();
+        for (int i = 0; i < NUM_ENEMIES; i++) {
           if (bottom_row_alive && i >= ROW_SIZE) {
             enemies[i].erase();
             enemies[i].move();
@@ -403,6 +402,7 @@ class Game {
             enemies[i].move();
           }
         }
+      }
 
         if (enemies[i].get_strength() > 0) {
           // Check for invader-player collision
