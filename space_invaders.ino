@@ -371,7 +371,7 @@ class Game {
     void update(int potentiometer_value, bool button_pressed) {
 
       // update player position
-      int player_x = map(potentiometer_value, 0, 1023, 1, 30);
+      int player_x = map(potentiometer_value, 0, 1023, 1, 31);
       if (player_x != player.get_x()) {
         player.erase();
         player.set_x(player_x);
