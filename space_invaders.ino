@@ -508,7 +508,7 @@ class Game {
       // Initialize enemies based on level
       for (int i = 0; i < NUM_ENEMIES; i++) {
         // Invaders are 4 wide and 4 tall
-        int x = (i % ROW_SIZE) * 4 + 1;
+        int x = (i % ROW_SIZE) * 4;
         int y = 0;
         if (i >= ROW_SIZE) {
           y = 4;
