@@ -378,13 +378,12 @@ class Game {
 
       // Fire cannonball
       if (!ball.has_been_fired() && button_pressed) {
-        ball.fire(player_x, 13);
+        ball.fire(player_x, 12);
         ball_time = millis();
       }
 
       // Cannonball tick
-      if (ball.has_been_fired() &&
-          millis() - ball_time >= BALL_TICK) {
+      if (ball.has_been_fired() && millis() - ball_time >= BALL_TICK) {
 
           ball.erase();
           ball.move();
