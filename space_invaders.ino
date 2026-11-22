@@ -598,7 +598,7 @@ void print_lives(int lives) {
   matrix.print("Lives");
 
   matrix.setCursor(0,8);
-  matrix.print(Lives);
+  matrix.print(lives);
 
   delay(2000);
   matrix.fillScreen(BLACK.to_333());
