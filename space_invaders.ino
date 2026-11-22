@@ -420,12 +420,12 @@ class Game {
           if (ball.has_been_fired()) {
             int x_difference = ball.get_x() - enemy_x;
           
-            if ((x_difference == 0 || x_difference == 3) && ball.get_y() <= enemy_y + 3) {
+            if ((x_difference == 0 || x_difference == 3) && ball.get_y() <= enemy_y + 2) {
 
               enemies[i].hit();
               ball.hit();
 
-            } else if ((x_difference == 1 || x_difference == 2) && ball.get_y() <= enemy_y + 2) {
+            } else if ((x_difference == 1 || x_difference == 2) && ball.get_y() <= enemy_y + 1) {
 
               enemies[i].hit();
               ball.hit();
