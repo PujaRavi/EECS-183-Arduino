@@ -486,23 +486,6 @@ class Game {
 
       player.draw();
       ball.draw();
-  }
-  private:
-    int level;
-    unsigned long enemy_time;
-    unsigned long ball_time;
-    Player player;
-    Cannonball ball;
-    Invader enemies[NUM_ENEMIES];
-
-    // check if Player defeated all Invaders in current level
-    bool level_cleared() {
-      for (int i = 0; i < NUM_ENEMIES; i++) {
-        if (enemies[i].get_strength() > 0) {
-          return false;
-        }
-      }
-      return true;
     }
 
     // set up a level
@@ -548,6 +531,24 @@ class Game {
         }
         enemies[i].initialize(x, y, strength);
       }
+    }
+
+  private:
+    int level;
+    unsigned long enemy_time;
+    unsigned long ball_time;
+    Player player;
+    Cannonball ball;
+    Invader enemies[NUM_ENEMIES];
+
+    // check if Player defeated all Invaders in current level
+    bool level_cleared() {
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        if (enemies[i].get_strength() > 0) {
+          return false;
+        }
+      }
+      return true;
     }
 };
 
