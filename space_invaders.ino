@@ -344,15 +344,17 @@ class Player {
     void draw_with_rgb(Color color) {
       matrix.drawPixel(x, y, color.to_333());
       matrix.drawPixel(x, y+1, color.to_333());
+      matrix.drawPixel(x-1,y+1, color.to_333());
+      matrix.drawPixel(x+1,y+1, color.to_333());
 
 
-      if (x > 1) {
-        matrix.drawPixel(x-1,y+1, color.to_333());
-      }
+      //if (x > 1) {
+        //matrix.drawPixel(x-1,y+1, color.to_333());
+      //}
 
-      if(x < 30) {
-        matrix.drawPixel(x+1,y+1, color.to_333());
-      }
+      //if(x < 30) {
+        //matrix.drawPixel(x+1,y+1, color.to_333());
+      //}
 
     }
 };
