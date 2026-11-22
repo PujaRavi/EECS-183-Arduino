@@ -360,9 +360,6 @@ class Game {
     void setup_game() {
       level = 0;
       player.set_lives(3);
-      
-      enemy_time = millis();
-      ball_time = millis();
     }
     
     // advances the game simulation one step and renders the graphics
@@ -530,6 +527,8 @@ class Game {
         }
         enemies[i].initialize(x, y, strength);
       }
+      enemy_time = millis();
+      ball_time = millis();
     }
 
   private:
@@ -569,7 +568,6 @@ void loop() {
   int potentiometer_value = analogRead(POTENTIOMETER_PIN_NUMBER);
   bool button_pressed = (digitalRead(BUTTON_PIN_NUMBER) == HIGH);
   game.update(potentiometer_value, button_pressed);
-  Serial.println("pot value: " + potentiometer_value);
 }
 
 // displays Level
