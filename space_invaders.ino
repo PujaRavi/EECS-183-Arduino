@@ -290,11 +290,11 @@ class Player {
     
     // setter
     void set_x(int x_arg) {
-      if(x_arg < 0) {
+      if(x_arg < 1) {
         x = 1;
       }
-      else if (x_arg > 31) {
-        x = 31;
+      else if (x_arg > 30) {
+        x = 30;
       }
       else {
         x = x_arg;
@@ -344,16 +344,15 @@ class Player {
     void draw_with_rgb(Color color) {
       matrix.drawPixel(x, y, color.to_333());
       matrix.drawPixel(x, y+1, color.to_333());
-      matrix.drawPixel(x-1,y+1, color.to_333());
-      matrix.drawPixel(x+1,y+1, color.to_333());
 
-      //if (x > 0) {
-        //matrix.drawPixel(x-1,y+1, color.to_333());
-      //}
 
-      //if(x < 31) {
-        //matrix.drawPixel(x+1,y+1, color.to_333());
-      //}
+      if (x > 0) {
+        matrix.drawPixel(x-1,y+1, color.to_333());
+      }
+
+      if(x < 31) {
+        matrix.drawPixel(x+1,y+1, color.to_333());
+      }
 
     }
 };
