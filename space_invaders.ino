@@ -409,7 +409,6 @@ class Game {
           
           // Check for invader-player collision
           if (enemy_y >= 11 && (enemy_x == player_x || enemy_x + 3 == player_x)) {
-
             level--;
             player.die();
             reset_level();
@@ -428,7 +427,6 @@ class Game {
             } else if ((x_difference == 1 || x_difference == 2) && ball.get_y() <= enemy_y + 2) {
 
               enemies[i].hit();
-              ball.erase();
               ball.hit();
             }
           }
