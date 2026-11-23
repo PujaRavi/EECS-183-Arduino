@@ -17,7 +17,7 @@ const int BUTTON_PIN_NUMBER = 10;
 // global constant for the number of Invaders in the game
 const int NUM_ENEMIES = 16;
 const int ROW_SIZE = 8;
-const int GAME_TICK = 2000;
+const int INVADER_TICK = 2000;
 const int BALL_TICK = 50;
 
 // a global variable that represents the LED screen
@@ -436,11 +436,10 @@ class Game {
       }
       
       // Invader tick
-      if (millis() - enemy_time >= GAME_TICK) {
+      if (millis() - enemy_time >= INVADER_TICK) {
 
         bool bottom_row_alive = false;
-
-        // Determine whether bottom row still has invaders
+        // Check if bottom row is alive
         for (int i = ROW_SIZE; i < NUM_ENEMIES; i++) {
           if (enemies[i].get_strength() > 0) {
             bottom_row_alive = true;
@@ -448,7 +447,7 @@ class Game {
           }
         }
 
-        // Move the appropriate row
+        // Move bottom row of invaders
         for (int i = 0; i < NUM_ENEMIES; i++) {
 
           if (bottom_row_alive && i >= ROW_SIZE) {
@@ -470,7 +469,7 @@ class Game {
         enemy_time = millis();
       }
 
-      // Check whether level is cleared
+      // Check if level cleared
       if (level_cleared()) {
         reset_level();
       }
@@ -479,7 +478,6 @@ class Game {
       for (int i = 0; i < NUM_ENEMIES; i++) {
         enemies[i].draw();
       }
-
       player.draw();
       ball.draw();
     }
@@ -540,7 +538,7 @@ class Game {
     Cannonball ball;
     Invader enemies[NUM_ENEMIES];
 
-    // check if Player defeated all Invaders in current level
+    // check if player defeated all invaders in current level
     bool level_cleared() {
       for (int i = 0; i < NUM_ENEMIES; i++) {
         if (enemies[i].get_strength() > 0) {
