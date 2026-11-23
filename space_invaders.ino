@@ -521,7 +521,7 @@ class Game {
 
         } else if (level > 4) {
           // Level 5+: 16 invaders with random strength
-          strength = random(1, 7);
+          strength = random(1, 8);
 
         }
         enemies[i].initialize(x, y, strength);
